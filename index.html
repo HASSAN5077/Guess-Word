@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+
+        }
+        header{
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1abc9c;
+        }
+        header h1{
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: capitalize;
+        }
+        .container{
+            width: 100%;
+            position: relative;
+            height:calc(100vh - 100px);
+            background: #55efc4;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container .box{
+            width: 600px;
+            height: 400px;
+            background:  #10ac84;
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .msg{
+            margin-bottom: 20px;
+            color: #222;
+            font-size: 25px;
+        }
+        input{
+            width: 50%;
+            height: 0px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            margin-bottom: 20px;
+            font-size: 20px;
+            padding: 25px ;
+            text-align: center;
+            display: none;
+        }
+        button{
+            padding: 10px 20px;
+            border: none;
+            font-size: 20px;
+            color: #12CBC4;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            background: #fff;
+            box-shadow: 0 5px 5px rgba(0,0,0,.1);
+            text-transform: uppercase;
+        }
+        .hidden{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Guess the word game </h1>
+    </header>
+    <div class="container">
+        <div class="box">
+            <h3 class="msg"></h3>
+            <input type="text" class="input">
+            <button>Click Here to Start</button>
+        </div>
+    </div>
+    <script>
+        let input = document.querySelector(".input");
+        let msg = document.querySelector(".msg");
+        let btn = document.querySelector("button");
+        let play = false;
+        let rWords = ['python','java','html','css','javascript','php','android','reactjs','angular','swift'];
+        let newWords = "";
+        let randomWords = "";
+        const createNewWords =()=>{
+            let randomNumber =(Math.floor(Math.random() * rWords.length));
+            let newRightWord = rWords[randomNumber];
+            return newRightWord;
+        }
+        const scrambleWords = (arr)=>{
+            for(let i=arr.length -1;i>0;i--){
+                let temp = arr[i];
+                let j= Math.floor(Math.random() * (i+1));
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+            return arr;
+        } 
+        btn.addEventListener("click",function(){
+            if(!play){
+                play=true;
+                btn.innerHTML = "Guess";
+                input.classList.toggle('hidden');
+                newWords = createNewWords();
+                randomWords = scrambleWords(newWords.split("")).join("");
+                msg.innerHTML = `Guess the Word: ${randomWords}`;
+                console.log(randomWords.join(""));
+            }
+            else{
+                let tempCheck = input.value;
+                if(tempCheck===newWords){
+                    play=false;
+                    msg.innerHTML = `Awesome It's Correct ${newWords}`;
+                    btn.innerHTML = "Start Again";
+                    input.classList.toggle('hidden');
+                    input.value = "";
+                }
+                else{
+                    msg.innerHTML = `Soory. It's incorrect. Plz try Again ${newWords}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
